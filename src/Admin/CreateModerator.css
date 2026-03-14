@@ -1,0 +1,329 @@
+/* Color Variables for easy theming */
+:root {
+  --kalyana-primary: #2c3e50;
+  --kalyana-primary-hover: #1a252f;
+  --kalyana-accent: #c0392b;
+  --kalyana-accent-light: #fdf2f2;
+  --kalyana-bg: #f8f9fa;
+  --kalyana-surface: #ffffff;
+  --kalyana-text-main: #1e293b;
+  --kalyana-text-muted: #64748b;
+  --kalyana-border: #e2e8f0;
+  --kalyana-input-bg: #f8fafc;
+}
+
+/* Container & Layout */
+.kalyana-mod-wrapper {
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: var(--kalyana-bg);
+  box-sizing: border-box;
+}
+
+.kalyana-mod-card {
+  width: 100%;
+  max-width: 850px;
+  background-color: var(--kalyana-surface);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--kalyana-border);
+  overflow: hidden;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Header */
+.kalyana-mod-header {
+  padding: 2rem 2.5rem;
+  background-color: var(--kalyana-surface);
+  border-bottom: 1px solid var(--kalyana-border);
+}
+
+.kalyana-mod-header h2 {
+  margin: 0 0 0.5rem 0;
+  color: var(--kalyana-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.kalyana-mod-header p {
+  margin: 0;
+  color: var(--kalyana-text-muted);
+  font-size: 0.95rem;
+}
+
+/* Alert Banners */
+.kalyana-mod-alert {
+  margin: 1.5rem 2.5rem 0 2.5rem;
+  padding: 1rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.kalyana-mod-alert-success {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.kalyana-mod-alert-error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+/* Form Layout */
+.kalyana-mod-form {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.kalyana-mod-input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Inputs */
+.kalyana-mod-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.kalyana-mod-form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--kalyana-text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kalyana-mod-form-group input {
+  padding: 0.85rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--kalyana-text-main);
+  background-color: var(--kalyana-input-bg);
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.kalyana-mod-form-group input::placeholder {
+  color: #94a3b8;
+}
+
+.kalyana-mod-form-group input:hover {
+  border-color: #94a3b8;
+}
+
+.kalyana-mod-form-group input:focus {
+  outline: none;
+  border-color: var(--kalyana-primary);
+  background-color: var(--kalyana-surface);
+  box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+}
+
+/* Permissions Panel */
+.kalyana-mod-permissions-panel {
+  background-color: var(--kalyana-bg);
+  border: 1px solid var(--kalyana-border);
+  border-radius: 10px;
+  padding: 1.8rem;
+}
+
+.kalyana-mod-permissions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--kalyana-border);
+  gap: 1rem;
+}
+
+.kalyana-mod-perm-titles h3 {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.1rem;
+  color: var(--kalyana-text-main);
+}
+
+.kalyana-mod-perm-titles p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--kalyana-text-muted);
+}
+
+/* Custom Checkbox Grid */
+.kalyana-mod-permissions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.kalyana-mod-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1rem;
+  background-color: var(--kalyana-surface);
+  border: 1px solid var(--kalyana-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.kalyana-mod-checkbox-wrapper:hover {
+  border-color: #cbd5e1;
+  background-color: var(--kalyana-input-bg);
+}
+
+.kalyana-mod-checkbox-wrapper.active {
+  border-color: var(--kalyana-accent);
+  background-color: var(--kalyana-accent-light);
+}
+
+.kalyana-mod-checkbox-wrapper input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--kalyana-accent);
+}
+
+.kalyana-mod-checkbox-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--kalyana-text-main);
+  user-select: none;
+}
+
+.kalyana-mod-checkbox-wrapper.active .kalyana-mod-checkbox-text {
+  color: var(--kalyana-accent);
+}
+
+/* Buttons */
+.kalyana-mod-btn-outline {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  color: var(--kalyana-text-muted);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.kalyana-mod-btn-outline:hover {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+  color: var(--kalyana-text-main);
+}
+
+.kalyana-mod-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--kalyana-border);
+}
+
+.kalyana-mod-btn-primary {
+  background-color: var(--kalyana-primary);
+  color: #ffffff;
+  border: none;
+  padding: 0.9rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(44, 62, 80, 0.2);
+  width: auto;
+}
+
+.kalyana-mod-btn-primary:hover:not(:disabled) {
+  background-color: var(--kalyana-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(44, 62, 80, 0.25);
+}
+
+.kalyana-mod-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.kalyana-mod-btn-primary:disabled {
+  background-color: #94a3b8;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+@media (max-width: 768px) {
+  .kalyana-mod-input-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  
+  .kalyana-mod-permissions-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .kalyana-mod-wrapper {
+    padding: 1rem 0.5rem;
+  }
+
+  .kalyana-mod-header {
+    padding: 1.5rem;
+  }
+  
+  .kalyana-mod-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .kalyana-mod-form {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .kalyana-mod-alert {
+    margin: 1rem 1.5rem 0 1.5rem;
+  }
+
+  .kalyana-mod-permissions-panel {
+    padding: 1.2rem;
+  }
+
+  .kalyana-mod-permissions-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .kalyana-mod-btn-outline {
+    width: 100%;
+    padding: 0.7rem;
+  }
+
+  .kalyana-mod-form-actions {
+    justify-content: center;
+  }
+
+  .kalyana-mod-btn-primary {
+    width: 100%;
+  }
+}
