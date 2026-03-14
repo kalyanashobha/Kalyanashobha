@@ -4,6 +4,96 @@ import toast, { Toaster } from 'react-hot-toast';
 import imageCompression from 'browser-image-compression'; 
 import './MyProfile.css';
 
+// --- CUSTOM TIME PICKER COMPONENT ---
+const CustomTimePicker = ({ isOpen, onClose, onSet, initialTime }) => {
+  const [hour, setHour] = useState('');
+  const [minute, setMinute] = useState('');
+  const [period, setPeriod] = useState('AM');
+
+  useEffect(() => {
+    if (isOpen && initialTime) {
+      const match = initialTime.match(/(\d+):(\d+)\s*(AM|PM)/i);
+      if (match) {
+        setHour(match[1]);
+        setMinute(match[2]);
+        setPeriod(match[3].toUpperCase());
+      }
+    }
+  }, [isOpen, initialTime]);
+
+  const handleSet = () => {
+    if (hour && minute) {
+      const formattedHour = hour.padStart(2, '0');
+      const formattedMinute = minute.padStart(2, '0');
+      onSet(`${formattedHour}:${formattedMinute} ${period}`);
+    } else {
+      onSet(''); 
+    }
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div style={{ 
+      width: '320px', backgroundColor: '#fff', padding: '0', borderRadius: '12px', overflow: 'hidden',
+      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+      border: '1px solid #e2e8f0'
+    }}>
+      <div style={{ backgroundColor: '#6366f1', color: 'white', padding: '20px' }}>
+        <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: '500' }}>Set time</h3>
+      </div>
+      
+      <div style={{ padding: '24px 20px' }}>
+        <p style={{ margin: '0 0 16px 0', fontSize: '0.9rem', color: '#475569', fontWeight: '500' }}>Type in time</p>
+        
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <input 
+              type="number" placeholder="12" min="1" max="12" value={hour}
+              onChange={(e) => {
+                let val = e.target.value;
+                if (val.length > 2) val = val.slice(-2);
+                if (parseInt(val) > 12) val = '12';
+                setHour(val);
+              }}
+              style={{ width: '100%', fontSize: '1.5rem', textAlign: 'center', border: 'none', borderBottom: '2px solid #6366f1', padding: '8px 0', outline: 'none' }}
+            />
+            <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px' }}>hour</span>
+          </div>
+          <span style={{ fontSize: '1.5rem', fontWeight: 'bold', paddingBottom: '20px' }}>:</span>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <input 
+              type="number" placeholder="00" min="0" max="59" value={minute}
+              onChange={(e) => {
+                let val = e.target.value;
+                if (val.length > 2) val = val.slice(-2);
+                if (parseInt(val) > 59) val = '59';
+                setMinute(val);
+              }}
+              style={{ width: '100%', fontSize: '1.5rem', textAlign: 'center', border: 'none', borderBottom: '2px solid #6366f1', padding: '8px 0', outline: 'none' }}
+            />
+            <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px' }}>minute</span>
+          </div>
+          <div style={{ flex: 1 }}>
+            <select 
+              value={period} onChange={(e) => setPeriod(e.target.value)}
+              style={{ width: '100%', padding: '12px 8px', fontSize: '1rem', border: 'none', outline: 'none', background: 'transparent', appearance: 'none', cursor: 'pointer', textAlign: 'center' }}
+            >
+              <option value="AM">AM</option><option value="PM">PM</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '16px', gap: '16px' }}>
+        <button type="button" onClick={() => { setHour(''); setMinute(''); setPeriod('AM'); }} style={{ background: 'none', border: 'none', color: '#6366f1', fontWeight: '600', cursor: 'pointer' }}>CLEAR</button>
+        <button type="button" onClick={onClose} style={{ background: 'none', border: 'none', color: '#6366f1', fontWeight: '600', cursor: 'pointer' }}>CANCEL</button>
+        <button type="button" onClick={handleSet} style={{ background: 'none', border: 'none', color: '#6366f1', fontWeight: '600', cursor: 'pointer' }}>SET</button>
+      </div>
+    </div>
+  );
+};
+
 // --- SKELETON LOADER ---
 const ProfileSkeleton = () => (
   <div className="mp-container fade-in">
@@ -37,12 +127,14 @@ const ProfileSkeleton = () => (
 
 const MyProfile = () => {
   const [user, setUser] = useState(null);
-  // --- ADDED STATE FOR AGENT INFO ---
   const [referredBy, setReferredBy] = useState(null); 
   
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
+
+  // Time Picker State
+  const [showTimePicker, setShowTimePicker] = useState(false);
   
   // Photo States
   const [existingPhotos, setExistingPhotos] = useState([]); 
@@ -68,7 +160,6 @@ const MyProfile = () => {
       if (data.success) {
         setUser(data.user);
         
-        // --- ADDED THIS TO CAPTURE AGENT DATA ---
         setReferredBy(data.referredBy || null); 
         
         setFormData({
@@ -222,6 +313,23 @@ const MyProfile = () => {
         }}
       />
 
+      {/* Render Custom Time Picker Modal Overlay */}
+      {showTimePicker && (
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(2px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <CustomTimePicker 
+            isOpen={showTimePicker} 
+            onClose={() => setShowTimePicker(false)} 
+            initialTime={formData.astrologyDetails?.timeOfBirth} 
+            onSet={(formattedTime) => { 
+              setFormData(prev => ({ 
+                ...prev, 
+                astrologyDetails: { ...prev.astrologyDetails, timeOfBirth: formattedTime } 
+              })); 
+            }} 
+          />
+        </div>
+      )}
+
       {loading ? (
         <ProfileSkeleton />
       ) : (
@@ -257,7 +365,6 @@ const MyProfile = () => {
                 <div className="mp-meta-info" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
                   <span className="mp-meta-item">ID: {user?.uniqueId || 'N/A'}</span>
                   
-                  {/* --- NEW: AGENT BADGE DISPLAY --- */}
                   {referredBy && (
                     <span className="mp-meta-item" style={{ 
                       background: '#ecfdf5', 
@@ -533,10 +640,23 @@ const MyProfile = () => {
                         <label>Pada</label>
                         <input name="astrologyDetails.pada" value={formData.astrologyDetails?.pada || ''} onChange={handleChange} />
                       </div>
+                      
+                      {/* INTEGRATED CUSTOM TIME PICKER INPUT */}
                       <div className="mp-input-wrap">
                         <label>Time of Birth</label>
-                        <input type="time" name="astrologyDetails.timeOfBirth" value={formData.astrologyDetails?.timeOfBirth || ''} onChange={handleChange} />
+                        <div style={{ position: 'relative' }}>
+                          <input 
+                            type="text" 
+                            name="astrologyDetails.timeOfBirth" 
+                            value={formData.astrologyDetails?.timeOfBirth || ''} 
+                            onClick={() => setShowTimePicker(true)} 
+                            readOnly 
+                            placeholder="e.g. 02:30 PM"
+                            style={{ cursor: 'pointer', width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #d1d5db', backgroundColor: '#f9fafb' }} 
+                          />
+                        </div>
                       </div>
+
                       <div className="mp-input-wrap">
                         <label>Place of Birth</label>
                         <input name="astrologyDetails.placeOfBirth" value={formData.astrologyDetails?.placeOfBirth || ''} onChange={handleChange} />
